@@ -1,5 +1,6 @@
 const inputFile = document.getElementById('file');
 const output = document.getElementById('output');
+const colors = document.getElementById('colors');
 file.addEventListener('change', () => {
   const data = new FormData()
   const file = inputFile.files[0]
@@ -12,7 +13,7 @@ file.addEventListener('change', () => {
     async response => {
       const json = await response.json() 
       output.src = json.data
-      console.log(json) 
+      colors.innerHTML = JSON.stringify(json.colors, null, "<br />");
     }
   ).then(
     success => console.log(success) 
