@@ -1,14 +1,19 @@
 const inputFile = document.getElementById('file');
+const output = document.getElementById('output');
 file.addEventListener('change', () => {
   const data = new FormData()
   const file = inputFile.files[0]
   data.append('image', file, file.name)
 
-  fetch('http://0.0.0.0:4000/upload', { 
+  fetch('/upload', { 
     method: 'POST',
     body: data
   }).then(
-    response => response.json() 
+    async response => {
+      const json = await response.json() 
+      output.src = json.data
+      console.log(json) 
+    }
   ).then(
     success => console.log(success) 
   ).catch(
