@@ -1,5 +1,14 @@
 #output {
-   width: 60vw;
+   width: 150px;
+   float: left;
+   border: 0;
+   margin: 10px;
    image-rendering: pixelated; 
    image-rendering: crisp-edges;
+}
+
+#grid td {
+  width: 30px;
+  height: 30px;  
+  display: inline-block;
 }

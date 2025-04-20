@@ -20,28 +20,40 @@ app.post('/upload', async (req, res) => {
   const inputImage = req.files.image
   const image = await Jimp.read(inputImage.data)
   image.resize({ w: 200 })
-  image.quantize({colors: 6})
+  image.quantize({colors: 4})
   image.resize({ w: 20 })
   await image.write('output.png')
 
   let colors = {}
   image.scan((x, y, idx) => {
-    const color = image.getPixelColor(x,y)
-    const colorName = colorNamer("#"+(color).toString(16));
-    const name = colorName.basic[0].name
-    if(colors[name] == undefined) {
-      colors[name] = ""
+    let color = (image.getPixelColor(x,y).toString(16)).substring(0,6)
+
+    if(!(color in colors)) {
+      colors[color] = ""
     }
 
-    colors[name] += "("+x+","+y+"), "
+    colors[color] += "("+(x + 1)+","+(y+1)+"), "
   });
+
+  let coordinates = {}
+  Object.keys(colors).forEach(key => {
+    let colorName = colorNamer("#"+key);
+    let name = colorName.basic[0].name
+    if(name == "white"){
+      return
+    }
+    if(!(name in coordinates)) {
+      coordinates[name] = ""
+    }
+    coordinates[name] += colors[key]
+  })
 
 
   const path = __dirname + '/output.png'
   const img = fs.readFileSync(path);
   const base64 = Buffer.from(img).toString('base64');
   const data = 'data:image/png;base64,' + base64
-  res.json({ data, colors })
+  res.json({ data, coordinates })
 })
 
 app.listen(port, () => {

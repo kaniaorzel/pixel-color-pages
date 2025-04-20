@@ -10,10 +10,23 @@
       <form method="post" action="#">
         <label for="file">Pick the image file</label>
         <input type="file" name="file" id="file" accept="image/*" /> 
+
+        <label for="type">Type</label>
+        <select id="type">
+          <option value="coordinates">coordinates</option>
+          <option value="in-grid">in grid</option>
+        </select>
       </form>
+      <hr />
+      
+      <div id="grid">
+       
+
+      </div>
 
       <div id="result">
-        <img src="#" alt="output" id="output" />        
+        <img src="#" id="output" />        
+
         <div id="colors"></div>
       </div>
     </main>
