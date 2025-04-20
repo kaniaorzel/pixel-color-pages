@@ -10,7 +10,15 @@ function render(){
   let isInGrid = type.value == "in-grid"
   colors.innerHTML = '';
   if(!isInGrid){
-    colors.innerHTML = JSON.stringify(outputJson, null, "<br />");
+    colors.innerHTML = JSON.stringify(outputJson.coordinates, null, "<br />");
+  }
+
+  let colorsList = []
+  if(isInGrid){
+    colorsList = Object.keys(outputJson.coordinates)
+    colorsList.forEach((key, index) => {
+     colors.innerHTML += index + " - " + key + "<br />"
+    })
   }
 
   gridOutput = "<table>"
@@ -27,7 +35,8 @@ function render(){
 
     for(let x = 1; x <= 20; ++x){
       gridOutput += "<td>"
-      gridOutput += isInGrid ? '' : ""
+      let value = colorsList.indexOf(outputJson.ingrid[x+"x"+y])
+      gridOutput += isInGrid && value >= 0 ? value : ""
 
       gridOutput += "</td>"
     }
@@ -60,7 +69,7 @@ file.addEventListener('change', () => {
     async response => {
       const json = await response.json() 
       output.src = json.data
-      outputJson = json.coordinates 
+      outputJson = json
       render()
     }
   ).then(

@@ -25,35 +25,34 @@ app.post('/upload', async (req, res) => {
   await image.write('output.png')
 
   let colors = {}
+  let ingrid = {}
+  let coordinates = {}
   image.scan((x, y, idx) => {
     let color = (image.getPixelColor(x,y).toString(16)).substring(0,6)
 
     if(!(color in colors)) {
-      colors[color] = ""
+      let colorName = colorNamer("#"+color);
+      let name = colorName.basic[0].name
+      if(name == "white"){
+        return
+      }
+      colors[color] = name
+      if(!(name in coordinates)){
+        coordinates[name] = ""
+      }
     }
 
-    colors[color] += "("+(x + 1)+","+(y+1)+"), "
+    coordinates[colors[color]] += "("+(x + 1)+","+(y+1)+"), "
+    ingrid[(x+1)+"x"+(y+1)] = colors[color]
   });
 
-  let coordinates = {}
-  Object.keys(colors).forEach(key => {
-    let colorName = colorNamer("#"+key);
-    let name = colorName.basic[0].name
-    if(name == "white"){
-      return
-    }
-    if(!(name in coordinates)) {
-      coordinates[name] = ""
-    }
-    coordinates[name] += colors[key]
-  })
 
 
   const path = __dirname + '/output.png'
   const img = fs.readFileSync(path);
   const base64 = Buffer.from(img).toString('base64');
   const data = 'data:image/png;base64,' + base64
-  res.json({ data, coordinates })
+  res.json({ data, ingrid, coordinates })
 })
 
 app.listen(port, () => {
