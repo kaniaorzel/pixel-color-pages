@@ -20,12 +20,12 @@ function render(){
      colors.innerHTML += index + " - " + key + "<br />"
     })
   }
-
+  let alphabet = 'abcdefghijklmnopqrstuvwxyz'.toUpperCase().split('');
   gridOutput = "<table>"
   gridOutput += "<tr>"
   gridOutput += "<td></td>"
-  for(let x = 1; x <= 20; ++x){
-      gridOutput += "<td>"+x+"</td>"
+  for(let x = 0; x <= 20; ++x){
+      gridOutput += "<td>"+alphabet[x]+"</td>"
   }
 
   gridOutput += "</tr>"
@@ -45,8 +45,8 @@ function render(){
   }
   gridOutput += "<tr>"
   gridOutput += "<td></td>"
-  for(let x = 1; x <= 20; ++x){
-      gridOutput += "<td>"+x+"</td>"
+  for(let x = 0; x <= 20; ++x){
+      gridOutput += "<td>"+alphabet[x]+"</td>"
   }
 
   gridOutput += "</tr>"
