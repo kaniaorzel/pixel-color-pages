@@ -24,6 +24,7 @@ app.post('/upload', async (req, res) => {
   image.resize({ w: 20 })
   await image.write('output.png')
 
+  let alphabet = 'abcdefghijklmnopqrstuvwxyz'.split('');
   let colors = {}
   let ingrid = {}
   let coordinates = {}
@@ -42,7 +43,7 @@ app.post('/upload', async (req, res) => {
       }
     }
 
-    coordinates[colors[color]] += "("+(x + 1)+","+(y+1)+"), "
+    coordinates[colors[color]] += alphabet[x]+(y+1)+" "
     ingrid[(x+1)+"x"+(y+1)] = colors[color]
   });
 
