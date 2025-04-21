@@ -24,7 +24,7 @@ app.post('/upload', async (req, res) => {
   image.resize({ w: 20 })
   await image.write('output.png')
 
-  let alphabet = 'abcdefghijklmnopqrstuvwxyz'.split('');
+  let alphabet = 'abcdefghijklmnopqrstuvwxyz'.toUpperCase().split('');
   let colors = {}
   let ingrid = {}
   let coordinates = {}
