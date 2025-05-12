@@ -1,41 +1,49 @@
 const inputFile = document.getElementById('file');
 const type = document.getElementById('type');
 const output = document.getElementById('output');
-const colors = document.getElementById('colors');
+const colorsList = document.getElementById('colorsList');
 const grid = document.getElementById('grid');
+const generate = document.getElementById('generate');
+const throbber = document.getElementById('throbber');
+const result = document.getElementById('result');
+const size = document.getElementById('size');
+const colors = document.getElementById('colors');
 let outputJson = {}
 
 
 function render(){
+  throbber.classList.add('hide')
+  result.classList.remove('hide')
+  let width = size.value
   let isInGrid = type.value == "in-grid"
-  colors.innerHTML = '';
+  colorsList.innerHTML = '';
   if(!isInGrid){
-    colors.innerHTML = JSON.stringify(outputJson.coordinates, null, "<br />");
+    colorsList.innerHTML = JSON.stringify(outputJson.coordinates, null, "<br />");
   }
 
-  let colorsList = []
+  let colorsArray = []
   if(isInGrid){
-    colorsList = Object.keys(outputJson.coordinates)
-    colorsList.forEach((key, index) => {
-     colors.innerHTML += index + " - " + key + "<br />"
+    colorsArray = Object.keys(outputJson.coordinates)
+    colorsArray.forEach((key, index) => {
+     colorsList.innerHTML += index + " - " + key + "<br />"
     })
   }
-  let alphabet = 'abcdefghijklmnopqrstuvwxyz'.toUpperCase().split('');
+  let alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('');
   gridOutput = "<table>"
   gridOutput += "<tr>"
   gridOutput += "<td></td>"
-  for(let x = 0; x <= 20; ++x){
+  for(let x = 0; x <= width; ++x){
       gridOutput += "<td>"+alphabet[x]+"</td>"
   }
 
   gridOutput += "</tr>"
-  for(let y = 1; y <= 25; ++y){
+  for(let y = 1; y <= width*1.2; ++y){
     gridOutput += "<tr>"
     gridOutput += "<td>"+y+"</td>"
 
-    for(let x = 1; x <= 20; ++x){
+    for(let x = 1; x <= width; ++x){
       gridOutput += "<td>"
-      let value = colorsList.indexOf(outputJson.ingrid[x+"x"+y])
+      let value = colorsArray.indexOf(outputJson.ingrid[x+"x"+y])
       gridOutput += isInGrid && value >= 0 ? value : ""
 
       gridOutput += "</td>"
@@ -45,7 +53,7 @@ function render(){
   }
   gridOutput += "<tr>"
   gridOutput += "<td></td>"
-  for(let x = 0; x <= 20; ++x){
+  for(let x = 0; x <= width; ++x){
       gridOutput += "<td>"+alphabet[x]+"</td>"
   }
 
@@ -57,10 +65,24 @@ function render(){
 }
 
 
-file.addEventListener('change', () => {
+generate.addEventListener('click', (e) => {
+  e.preventDefault()
+
+
   const data = new FormData()
   const file = inputFile.files[0]
+
+  if(file === undefined){
+    alert('File cannot be empty!')
+    return
+  }
+
   data.append('image', file, file.name)
+  data.append('size', size.value)
+  data.append('colors', colors.value)
+  
+  throbber.classList.remove('hide')
+  result.classList.add('hide')
 
   fetch('/upload', { 
     method: 'POST',
@@ -72,14 +94,12 @@ file.addEventListener('change', () => {
       outputJson = json
       render()
     }
-  ).then(
-    success => console.log(success) 
   ).catch(
-    error => console.log(error) 
+    error => {
+      console.log(error) 
+      alert(error)
+    }
   );
 })
 
-type.addEventListener('change', () => {
-  render();
-})
 

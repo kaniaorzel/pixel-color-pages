@@ -18,13 +18,15 @@ app.get('/', (req, res) => {
 
 app.post('/upload', async (req, res) => {
   const inputImage = req.files.image
+  const size = Number(req.body.size)
+  const colorsNumber = Number(req.body.colors)
   const image = await Jimp.read(inputImage.data)
   image.resize({ w: 200 })
-  image.quantize({colors: 4})
-  image.resize({ w: 20 })
+  image.quantize({colors: colorsNumber})
+  image.resize({ w: size })
   await image.write('output.png')
 
-  let alphabet = 'abcdefghijklmnopqrstuvwxyz'.toUpperCase().split('');
+  let alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('');
   let colors = {}
   let ingrid = {}
   let coordinates = {}

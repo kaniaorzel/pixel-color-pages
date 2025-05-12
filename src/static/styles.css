@@ -7,8 +7,25 @@
    image-rendering: crisp-edges;
 }
 
+body {
+  grid-template-columns: 1fr min(90vw, 90%) 1fr;
+}
+
 #grid td {
   width: 30px;
+  vertical-align: middle;
+  text-align: center;
   height: 30px;  
+  font-size: 10px;
   display: inline-block;
+}
+
+#throbber {
+  width: 50%;
+  margin: 0 auto;
+  display: block;
+}
+
+.hide {
+  display: none !important;
 }
