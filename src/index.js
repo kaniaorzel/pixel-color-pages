@@ -21,7 +21,7 @@ app.post('/upload', async (req, res) => {
   const size = Number(req.body.size)
   const colorsNumber = Number(req.body.colors)
   const image = await Jimp.read(inputImage.data)
-  image.resize({ w: 200 })
+  image.resize({ w: 100 })
   image.quantize({colors: colorsNumber})
   image.resize({ w: size })
   await image.write('output.png')
@@ -30,19 +30,32 @@ app.post('/upload', async (req, res) => {
   let colors = {}
   let ingrid = {}
   let coordinates = {}
+  let colorNameCache = {}
   image.scan((x, y, idx) => {
     let color = (image.getPixelColor(x,y).toString(16)).substring(0,6)
 
-    if(!(color in colors)) {
-      let colorName = colorNamer("#"+color);
-      let name = colorName.basic[0].name
-      if(name == "white"){
-        return
+    let name = colorNameCache[color] 
+    if(name == undefined){
+      let colorName = colorNamer("#"+color).basic;
+      for(let i = 0; i <= 5; i++){
+        if (colorName[i] == undefined){
+          break;
+        }
+
+        name = colorName[i].name
+        if(name == "white"){
+          break
+        }
+        if(!(name in colors)) {
+          break;
+        }
       }
-      colors[color] = name
-      if(!(name in coordinates)){
-        coordinates[name] = ""
-      }
+      colorNameCache[color] = name 
+    }
+
+    colors[color] = name
+    if(!(name in coordinates)){
+      coordinates[name] = ""
     }
 
     coordinates[colors[color]] += alphabet[x]+(y+1)+" "

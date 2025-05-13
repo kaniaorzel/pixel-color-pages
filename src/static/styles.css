@@ -16,7 +16,7 @@ body {
   vertical-align: middle;
   text-align: center;
   height: 30px;  
-  font-size: 10px;
+  font-size: 15px;
   display: inline-block;
 }
 
@@ -28,4 +28,15 @@ body {
 
 .hide {
   display: none !important;
+}
+
+@media print {
+
+   html {
+      zoom: 60%;
+   }
+
+   .no-print {
+      display: none !important;
+   }
 }

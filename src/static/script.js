@@ -14,6 +14,7 @@ let outputJson = {}
 function render(){
   throbber.classList.add('hide')
   result.classList.remove('hide')
+  grid.classList.remove('hide')
   let width = size.value
   let isInGrid = type.value == "in-grid"
   colorsList.innerHTML = '';
@@ -83,6 +84,7 @@ generate.addEventListener('click', (e) => {
   
   throbber.classList.remove('hide')
   result.classList.add('hide')
+  grid.classList.add('hide')
 
   fetch('/upload', { 
     method: 'POST',

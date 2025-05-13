@@ -6,8 +6,8 @@
   </head>
   <body>
     <main>
-      <h1>Pixel Color Pages - Generator</h1> 
-      <form method="post" action="#">
+      <h1 class="no-print">Pixel Color Pages - Generator</h1> 
+      <form class="no-print" method="post" action="#">
         <label for="file">Pick the image file</label>
         <input type="file" name="file" id="file" accept="image/*" /> 
 
@@ -23,9 +23,9 @@
 
         <input id="generate" type="submit" value="generate" />
       </form>
-      <hr />
+      <hr class="no-print" />
 
-      <img src="/throbber.gif" class="hide" id="throbber" /> 
+      <img src="/throbber.gif" class="hide no-print" id="throbber" /> 
       
       <div id="grid">
        
