@@ -53,6 +53,10 @@ app.post('/upload', async (req, res) => {
       colorNameCache[color] = name 
     }
 
+    if(name == "white"){
+      return
+    }
+
     colors[color] = name
     if(!(name in coordinates)){
       coordinates[name] = ""
